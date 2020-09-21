@@ -1,0 +1,41 @@
+.page-header{
+  margin: 15px;
+}
+
+button {
+  margin-left: 15px;
+}
+
+#toggle-view{
+  width: fit-content;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 18px;
+  padding-top: 20px;
+}
+
+#appsort{
+  display:inline-block;
+  margin-left: 10px;
+}
+
+#reporterbugsearch{
+  display:inline-block;
+  margin-left: 10px;
+}
+
+#searchbyreporterBtn{
+  display:inline-block;
+}
+
+#prioritysort{
+  display:inline-block;
+  margin-left: 10px;
+}
+
+#severitysort{
+  display:inline-block;
+  margin-left: 10px;
+}
+
+

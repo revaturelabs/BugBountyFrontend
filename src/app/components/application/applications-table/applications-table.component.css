@@ -1,0 +1,21 @@
+
+.mat-elevation-z8{
+  width:50%;
+  margin: auto;
+  border: solid 1px black;
+  height: auto;
+  box-shadow: none;
+
+}
+.full-width-table {
+  width: 100%;
+}
+
+th{
+  /* text-align: center; */
+  font-size: 1.5em;
+}
+
+td{
+  font-size: 1.2em;
+}

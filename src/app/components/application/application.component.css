@@ -1,0 +1,58 @@
+button{
+  margin: .5rem;
+}
+#formDiv{
+  margin-top: 1%;
+  margin-left: 2%;
+  text-align: center;
+}
+.mat-display-2{
+margin-bottom: 2%;
+}
+
+label{
+  font-size: 1.2em;
+}
+
+#canc{
+  background-color: var(--accent);
+  color: white;
+}
+
+span{
+  color: rgb(245, 18, 18);
+  font-weight: bold;
+}
+
+input{
+  width: 25%;
+  height: 1.9rem;
+  font-size: 1.5em;
+}
+
+#tErr, #lErr{
+  color: rgb(245, 18, 18);
+}
+
+.mat-elevation-z8{
+  width:50%;
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-bottom: 5%;
+  border: solid 1px black;
+  height: auto;
+  box-shadow: none;
+
+}
+.full-width-table {
+  width: 100%;
+}
+th{
+  font-size: 1.5em;
+
+}
+
+td{
+  font-size: 1.2em;
+}
+
