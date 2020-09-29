@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
 import BugReport from '../../models/BugReport';
 // import {MatExpansionModule} from '@angular/material/expansion';
 // import { report } from 'process';
-import Application from 'src/app/models/Application';
+import Application from "../../models/application";
 import {ApiServiceService} from '../../services/api-service.service';
 
 @Component({
@@ -83,7 +83,7 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
     this.obs = this.dataSource.connect();
 
   }
-  
+
   initializeSortMap(){
   //False will sort alphabetically and true will be unalphabetically
   this.sortingMap.set("title",false);
@@ -102,7 +102,7 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
 
   /**************************************************************************************************************
   When any of the filters are changed the following function calls occur.
-  
+
                                                   filterByApplication()
                                                            |
                                                            |
@@ -112,7 +112,7 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
                                                            |
                                                           \_/
                                                   setbugReportBySeverity
-  
+
   **************************************************************************************************************/
 
   filterLowPriorityBugs(bugReport){
@@ -122,7 +122,7 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
   filterMediumPriorityBugs(bugReport){
     return bugReport.priority == "Medium"
   }
-    
+
   filterHighPriorityBugs(bugReport){
     return bugReport.priority == "High"
   }
@@ -140,7 +140,7 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
   }
 
   filterByApplication(){
-    
+
     if(this.selectedAppTitle === "All"){
       this.bugReportsDisplay = this.bugReports;
     }else{
@@ -179,12 +179,12 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
     let filteredReports: BugReport[] = [];
 
     if(this.searchInput !== ""){
-      
+
       this.searchInput = this.searchInput.toLowerCase();
 
       for(let report of this.bugReportsDisplay){
           let dateString = new Date(report.createdTime);
-          
+
           if(report.title.toLowerCase().includes(this.searchInput)){
             filteredReports.push(report);
           }else if(report.app.title.toLowerCase().includes(this.searchInput)){
@@ -206,12 +206,12 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
       this.populate(this.bugReportsDisplay);
     }
   }
-  
+
   async getApplications(){
     this.apps = await this.apiservice.getApplications();
     return this.apps;
   }
-  
+
   sortColumn(column:string){
     this.bugReportsDisplay.sort(function(a,b){
       let statusA,statusB;
@@ -254,14 +254,14 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
         if(column === "priority"){
           statusA = a.priority;
           statusB = b.priority;
-          
+
         }else if (column ==="severity"){
           statusA = a.severity;
           statusB = b.severity;
         }
         statusA = (statusA==="High") ? 1 : (statusA==="Medium") ? 0 : -1;
         statusB = (statusB==="High") ? 1 : (statusB==="Medium") ? 0 : -1;
-        return (statusA < statusB) ? 1 : (statusA > statusB) ? -1 : 0; 
+        return (statusA < statusB) ? 1 : (statusA > statusB) ? -1 : 0;
       });
       if(this.sortingMap.get(column)){
         this.bugReportsDisplay.reverse();

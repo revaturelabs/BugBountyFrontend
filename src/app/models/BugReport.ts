@@ -1,4 +1,4 @@
-import Application from './Application';
+import Application from "./application";
 import Solution from './Solution';
 import Priority from './Priority';
 import Severity from './Severity';
@@ -13,15 +13,15 @@ export class BugReport {
     repSteps: string;
 
     dateCreated: number; // schaud added
-  
+
     createdTime: number;
     approvedTime: number;
     resolvedTime: number;
- 
+
 
     priority: Priority;
     severity: Severity;
- 
+
     pointValue: number;
     status: BugStatus;
 

@@ -1,7 +1,7 @@
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import Application from 'src/app/models/Application';
+import Application from "../models/application";
 import BugReport from 'src/app/models/BugReport';
 import Client from '../models/Client';
 
@@ -157,7 +157,7 @@ export class ApiServiceService {
     const httpResponse = await fetch(`${this.path}/forgotPassword`,request);
     const status = httpResponse.status;
     return status;
-    
+
   }
 
   async verifyAccount(username:string,email:string,key:string):Promise<Client>{

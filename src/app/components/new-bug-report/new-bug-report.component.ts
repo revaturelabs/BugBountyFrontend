@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {BugReport} from 'src/app/models/BugReport';
 import {Client} from 'src/app/models/Client';
-import {Application} from 'src/app/models/Application';
+import Application from "../../models/application";
 import {ApiServiceService} from 'src/app/services/api-service.service';
 import { Validators } from '@angular/forms';
 import BugStatus from 'src/app/models/BugStatus';
