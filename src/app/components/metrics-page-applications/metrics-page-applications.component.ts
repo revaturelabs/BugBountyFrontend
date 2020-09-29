@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as CanvasJS from 'src/assets/canvasjs.min';
-import { ApiServiceService } from 'src/app/services/api-service.service';
-import { Application } from 'src/app/models/Application';
-import { ConstantPool } from '@angular/compiler';
-import Solution from 'src/app/models/Solution';
-import { stringify } from 'querystring';
+import {ApiServiceService} from 'src/app/services/api-service.service';
 
 @Component({
   selector: 'app-metrics-page-applications',
@@ -21,7 +17,7 @@ export class MetricsPageApplicationsComponent implements OnInit {
   avgSolTimePerApp:Array<ylDataPoint> = [];
 
   hiLoResolveTime:Array<xyDataPoint> = [];
- 
+
 
   theme:string;
   solBugChart;
@@ -42,7 +38,7 @@ export class MetricsPageApplicationsComponent implements OnInit {
       this.theme='dark2';
     }
     this.getApplicationStats();
-    
+
     this.apiservice.theme.subscribe((event)=>{
       if (document.body.classList.contains('light-theme')){
         this.theme = 'light2';
@@ -111,15 +107,15 @@ export class MetricsPageApplicationsComponent implements OnInit {
       this.makeSolBugChart();
       this.solBugChart.options.theme ='light2';
       this.solBugChart.render();
-  
+
       this.makeUserChart();
       this.uChart.options.theme = 'light2';
       this.uChart.render();
-  
+
       this.makeAverageChart();
       this.avgChart.options.theme = 'light2';
       this.avgChart.render();
-  
+
       this.makeHiLoChart();
       this.hiLoChart.options.theme = 'light2';
       this.hiLoChart.render();
@@ -128,15 +124,15 @@ export class MetricsPageApplicationsComponent implements OnInit {
       this.makeSolBugChart();
       this.solBugChart.options.theme ='dark2';
       this.solBugChart.render();
-  
+
       this.makeUserChart();
       this.uChart.options.theme = 'dark2';
       this.uChart.render();
-  
+
       this.makeAverageChart();
        this.avgChart.options.theme = 'dark2';
       this.avgChart.render();
-  
+
       this.makeHiLoChart();
       this.hiLoChart.options.theme = 'dark2';
       this.hiLoChart.render();
@@ -175,7 +171,7 @@ export class MetricsPageApplicationsComponent implements OnInit {
 
     // chart.options.theme = "dark";
     this.solBugChart = chart;
-  } 
+  }
 
 
   makeUserChart(){
@@ -191,8 +187,8 @@ export class MetricsPageApplicationsComponent implements OnInit {
       axisY: {
         title: "Users"
       },
-      data: [{        
-        type: "pie",  
+      data: [{
+        type: "pie",
         dataPoints: this.usersPerApp
       }]
     });
@@ -252,7 +248,7 @@ export class MetricsPageApplicationsComponent implements OnInit {
     });
     this.hiLoChart = chart4;
   }
-  
+
 }
 
 export class ylDataPoint {

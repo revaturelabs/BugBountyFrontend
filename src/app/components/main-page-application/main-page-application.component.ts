@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Application } from 'src/app/models/Application';
+import Application from "../../models/application";
 import { BugReport } from 'src/app/models/BugReport';
 
 @Component({

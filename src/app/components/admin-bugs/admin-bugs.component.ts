@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import BugReport from '../../models/BugReport';
 import {ApiServiceService} from '../../services/api-service.service';
-import Application from 'src/app/models/Application';
+import Application from "../../models/application";
 
 @Component({
   selector: 'app-admin-bugs',
@@ -40,8 +40,8 @@ export class AdminBugsComponent implements OnInit {
   ngOnInit(): void {
     this.getBugReports();
     this.getApplications();
-    
-    
+
+
   }
 
   toggle() {
@@ -97,7 +97,7 @@ export class AdminBugsComponent implements OnInit {
   filterMediumPriorityBugs(bugReport){
     return bugReport.priority == "Medium"
   }
-    
+
   filterHighPriorityBugs(bugReport){
     return bugReport.priority == "High"
   }
