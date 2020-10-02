@@ -1,19 +1,24 @@
-import { Component, OnInit,  ElementRef, ViewChild } from '@angular/core';
+import {Component, OnInit, ElementRef, ViewChild, OnDestroy} from '@angular/core';
 import Client from '../../models/Client';
 import {ApiServiceService} from '../../services/api-service.service';
 import Solution from '../../models/Solution';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@angular/forms';
+import {TokenService} from "../../services/token.service";
+import {Observable, Subscription} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-login-mat',
   templateUrl: './login-mat.component.html',
   styleUrls: ['./login-mat.component.scss']
 })
-export class LoginMatComponent implements OnInit {
+export class LoginMatComponent implements OnInit, OnDestroy {
 
-  constructor(private serv: ApiServiceService, private http: HttpClient,private _snackBar:MatSnackBar) { }
+  constructor(private serv: ApiServiceService, private http: HttpClient,private _snackBar:MatSnackBar, private tokenService: TokenService) { }
+
+  private loginSub: Subscription;
 
   client = new Client();
 
@@ -37,28 +42,26 @@ export class LoginMatComponent implements OnInit {
   resetPasswordUsername = new FormControl('');
   wrongEmail:boolean;
 
+  readonly $authErrorMessage: Observable<string | undefined> = this.tokenService.$error;
+
   ngOnInit(): void {
   }
 
 
   async clientLogin()  {
-    const username = this.username.nativeElement.value;
-    const pass = this.password.nativeElement.value;
-    this.client = await this.serv.clientLogin(username, pass);
-    if (this.client != null && this.client.cId > 0) {
-        this.invalid = false;
-        this.serv.setLoggedClient(this.client);
-        this.showSpinner = true;
-        setTimeout(() => {
-          window.location.href = '/main';
-        }, 1000);
-        this.enableDisableRule();
+    this.loginSub = this.tokenService.attemptFormAuthentication({ email: this.username.nativeElement.value, password: this.password.nativeElement.value }).subscribe(
+      success => {
+        if (!success) {
+          console.log('Failed to authenticate');
+        }
       }
+    )
+  }
 
-    else {
-      this.invalid = true;
+  ngOnDestroy(): void {
+    if (this.loginSub) {
+      this.loginSub.unsubscribe();
     }
-
   }
 
   enableDisableRule() {
@@ -115,10 +118,10 @@ export class LoginMatComponent implements OnInit {
     }
 
     console.log(tempClient);
-    
-    const status = await this.serv.resetPassword(this.resetPasswordEmail.value,this.resetPasswordUsername.value);  
+
+    const status = await this.serv.resetPassword(this.resetPasswordEmail.value,this.resetPasswordUsername.value);
     console.log(status);
-    
+
     if(status > 199 && status < 400){
       this.openSnackBar(`Email was sent succesfully!`,"");
     }else{

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../../services/api-service.service';
 import Application from "../../models/application";
 import BugReport from 'src/app/models/BugReport';
+import {Observable} from "rxjs";
+import {fromPromise} from "rxjs/internal-compatibility";
 
 @Component({
   selector: 'app-main-page',
@@ -10,6 +12,7 @@ import BugReport from 'src/app/models/BugReport';
 })
 export class MainPageComponent implements OnInit {
 
+  $applications: Observable<Array<Application>>;
   applications: Array<Application> = [];
   bugReports: BugReport[];
   overlayContainer;
@@ -26,6 +29,7 @@ export class MainPageComponent implements OnInit {
 
   async getApplications(): Promise<any> {
     let aList: Array<Application> = await this.apiservice.getApplications();
+    this.$applications = fromPromise(this.apiservice.getApplications());
     this.applications = aList;
     this.selectedApp = aList[0];
     this.bugReports = this.selectedApp.reports;

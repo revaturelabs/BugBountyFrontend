@@ -31,6 +31,8 @@ import { MetricsPageDeveloperComponent } from './components/metrics-page-develop
 import { LoadingSpinnerComponent } from './components/ui/loading-spinner/loading-spinner.component';
 import { LoginMatComponent } from './components/login-mat/login-mat.component';
 import { ViewBugsPageComponent } from './components/view-bugs-page/view-bugs-page.component';
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {TokenInterceptor} from "./services/token.interceptor";
 
 
 @NgModule({
@@ -87,7 +89,11 @@ import { ViewBugsPageComponent } from './components/view-bugs-page/view-bugs-pag
   imports: [
     Modules
   ],
-  providers: [DatePipe, { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
+  providers: [
+    DatePipe,
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 

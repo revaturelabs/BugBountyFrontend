@@ -12,19 +12,20 @@ import { ViewBugsPageComponent } from './components/view-bugs-page/view-bugs-pag
 import { LoginMatComponent } from './components/login-mat/login-mat.component';
 import { MetricsPageComponent } from './components/metrics-page/metrics-page.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import {RequiresAuthenticationGuard} from "./services/requires-authentication.guard";
 
 const routes: Routes = [
-  { path: 'adminbugs', component: AdminBugsComponent},
-  { path: 'applications', component: ApplicationComponent },
-  { path: 'bugreport/:id', component: BugReportViewComponent },
-  { path: 'bugsolutionreview/:id', component: SolutionApprovalComponent},
-  { path: 'main', component: MainPageComponent },
-  { path: 'newbugreport', component: NewBugReportComponent },
-  { path: 'newpassword', component: UpdatePasswordComponent},
-  { path: 'profile', component: ProfileComponent},
-  { path: 'bugreportapprove/:id', component: BugReportViewComponent},
-  { path: 'bugs', component : ViewBugsPageComponent },
-  { path: 'metrics', component: MetricsPageComponent},
+  { path: 'adminbugs', component: AdminBugsComponent, canActivate: [RequiresAuthenticationGuard]},
+  { path: 'applications', component: ApplicationComponent, canActivate: [RequiresAuthenticationGuard] },
+  { path: 'bugreport/:id', component: BugReportViewComponent, canActivate: [RequiresAuthenticationGuard] },
+  { path: 'bugsolutionreview/:id', component: SolutionApprovalComponent, canActivate: [RequiresAuthenticationGuard]},
+  { path: 'main', component: MainPageComponent, canActivate: [RequiresAuthenticationGuard] },
+  { path: 'newbugreport', component: NewBugReportComponent, canActivate: [RequiresAuthenticationGuard] },
+  { path: 'newpassword', component: UpdatePasswordComponent, canActivate: [RequiresAuthenticationGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [RequiresAuthenticationGuard]},
+  { path: 'bugreportapprove/:id', component: BugReportViewComponent, canActivate: [RequiresAuthenticationGuard]},
+  { path: 'bugs', component : ViewBugsPageComponent, canActivate: [RequiresAuthenticationGuard] },
+  { path: 'metrics', component: MetricsPageComponent, canActivate: [RequiresAuthenticationGuard]},
   { path: '', component: LoginMatComponent},
   { path: 'resetpassword', component: PasswordResetComponent}
 
