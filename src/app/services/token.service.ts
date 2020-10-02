@@ -32,7 +32,14 @@ export class TokenService {
   constructor(private http: HttpClient, private router: Router) {}
 
   get $token(): Observable<string | undefined> {
-    return this._token.asObservable();
+    return this._token.asObservable().pipe(
+      map(token => {
+        if (token === undefined) {
+          return sessionStorage.getItem('token');
+        }
+        return token;
+      })
+    );
   }
 
   get $authenticated(): Observable<boolean> {
@@ -52,12 +59,13 @@ export class TokenService {
           this._token.next(token);
           const client = res.body;
           localStorage.setItem('client', JSON.stringify(client));
+          sessionStorage.setItem('token', token);
           this.router.navigateByUrl('/main');
           return true;
         } else {
           this._error.next('Invalid Credentials');
           this._token.next(undefined);
-          this.router.navigateByUrl('');
+          this.router.navigateByUrl('/');
           return false;
         }
       }),
