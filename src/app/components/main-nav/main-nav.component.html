@@ -38,21 +38,34 @@
       <span>Bug Bounty System </span>
       <mat-slide-toggle id="theme-toggle" (click)="changeTheme()">{{theme}}</mat-slide-toggle>
       <span class="spacer"></span>
-      <a [routerLink]="['/main']" [routerLinkActive]="['active']">Main</a>
-      <div class="links" *ngIf="clientRole >= 1"><!-- Dev & Admin-->
+      <a
+        [routerLink]="['/main']"
+        [routerLinkActive]="['active']"
+        *ngIf="$authenticated | async"
+      >
+        Main
+      </a>
+      <div class="links" *ngIf="($authenticated | async) || clientRole >= 1"><!-- Dev & Admin-->
         <a [routerLink]="['/profile']" [routerLinkActive]="['active']" id="profileTab">Profile</a>
         <a [routerLink]="['/newbugreport']" [routerLinkActive]="['active']" id="reportNewBug">Report New Bug</a>
       </div>
 
-      <a [routerLink]="['/bugs']" [routerLinkActive]="['active']" id="viewBugs">View Bugs</a>
+      <a
+        [routerLink]="['/bugs']"
+        [routerLinkActive]="['active']"
+        id="viewBugs"
+        *ngIf="$authenticated | async"
+      >
+        View Bugs
+      </a>
 
-      <div class="admin-links links" *ngIf="clientRole == 2"><!-- Admin -->
+      <div class="admin-links links" *ngIf="($authenticated | async) || clientRole == 2"><!-- Admin -->
         <a [routerLink]="['/applications']" [routerLinkActive]="['active']" id="applicationsTab">Applications</a>
         <a mat-list-item [routerLink]="['/metrics']" [routerLinkActive]="['active']">Metrics</a>
       </div>
       <a class="login" *ngIf="clientRole != 0" (click)="logout()">Logout</a>
       <a class="login" *ngIf="clientRole == 0" routerLink="/">Login</a>
-      
+
     </mat-toolbar>
     <!-- Add Content Here -->
   </mat-sidenav-content>

@@ -24,6 +24,8 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
   obs: Observable<any>;
   dataSource: MatTableDataSource<BugReport> = new MatTableDataSource<BugReport>();
 
+  $applications: Observable<Application[]>;
+
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['title', 'application', 'location', 'severity', 'priority', 'date', 'developer', 'details' ];
@@ -67,6 +69,7 @@ export class AdminBugsTableComponent implements AfterViewInit, OnInit {
     this.bugReportsDisplay = this.bugReports;
     this.initializeSortMap();
     this.getApplications();
+    this.$applications = this.apiservice.getApps();
   }
 
   ngAfterViewInit(): void {

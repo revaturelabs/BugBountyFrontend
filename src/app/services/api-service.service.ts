@@ -6,6 +6,8 @@ import BugReport from 'src/app/models/BugReport';
 import Client from '../models/Client';
 
 import Solution from '../models/Solution';
+import {from, Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +31,12 @@ export class ApiServiceService {
 
   //################ Start of Bug Report Section ###################
 
-  async getBugReports(): Promise<BugReport[]> {
-    return await this.http.get<BugReport[]>(`${this.path}/bugreports`).toPromise();
+  getBugReports(): Promise<BugReport[]> {
+    return this.http.get<BugReport[]>(`${this.path}/bugreports`).toPromise();
+  }
+
+  getBugs(): Observable<BugReport[]> {
+    return this.http.get<BugReport[]>(`${this.path}/bugreports`);
   }
 
   getbugReportByClientUsername(username:string){
@@ -94,16 +100,15 @@ export class ApiServiceService {
   getClientByUserName(username: any): Promise<Client> {
     return this.http.get<Client>(this.path + `/clients?username=${username}`).toPromise();
   }
-  async clientRegister(client: Client): Promise<Client> {
-    return await this.http.post<Client>(this.path + `/clients`, client).toPromise();
+  clientRegister(client: Client): Promise<Client> {
+    return this.http.post<Client>(this.path + `/clients`, client).toPromise();
   }
   getClientById(id: number): Promise<Client> {
     return this.http.get<Client>(`${this.path}/clients/${id}`).toPromise();
   }
 
-  async getAllClients():Promise<Array<Client>>{
-    let clients: Array<Client> = await this.http.get<Array<Client>>(`${this.path}/clients`).toPromise();
-    return clients;
+  getAllClients():Promise<Array<Client>>{
+    return this.http.get<Array<Client>>(`${this.path}/clients`).toPromise();
   }
 
   // async getClientBugReportCount(id: number) : Promise<number>{
@@ -134,13 +139,14 @@ export class ApiServiceService {
   //used on logout
   clearLoggedClient() {
     localStorage.clear();
+    sessionStorage.clear();
   }
 
   updatePassword(client:Client):Promise<Client> {
     return this.http.put<Client>(`${this.path}/clients`, client).toPromise();
   }
   //does not work
-  async resetPassword(requestEmail:string, requestedUsername:string):Promise<number>{
+  resetPassword(requestEmail:string, requestedUsername:string): Promise<number> {
 
     //add username to this config
     let config = {
@@ -154,27 +160,23 @@ export class ApiServiceService {
       body: JSON.stringify(config)
     };
 
-    const httpResponse = await fetch(`${this.path}/forgotPassword`,request);
-    const status = httpResponse.status;
-    return status;
-
+    return fetch(`${this.path}/forgotPassword`,request).then(res => res.status)
   }
 
-  async verifyAccount(username:string,email:string,key:string):Promise<Client>{
-    return await this.http.get<Client>(`${this.path}/verifyAccount?username=${username}&email=${email}&key=${key}`).toPromise();
+  verifyAccount(username:string,email:string,key:string):Promise<Client>{
+    return this.http.get<Client>(`${this.path}/verifyAccount?username=${username}&email=${email}&key=${key}`).toPromise();
   }
 
   //################ Start of Solution Section ###################
 
   //1. Add new Solution
   // TODO: check if Promise<Solution> is okay
-  async postSolution(solution: Solution): Promise<Solution> {
-    let ticketPromise = await this.http.post<Solution>(`${this.path}/solutions`, solution).toPromise();
-    return ticketPromise;
+  postSolution(solution: Solution): Promise<Solution> {
+    return this.http.post<Solution>(`${this.path}/solutions`, solution).toPromise();
   }
 
-  async getSolutions(): Promise<Solution[]> {
-    return await this.http.get<Solution[]>(`${this.path}/solutions`).toPromise();
+  getSolutions(): Promise<Solution[]> {
+    return this.http.get<Solution[]>(`${this.path}/solutions`).toPromise();
   }
 
   //2. Get all Solutions by Bug Report ID
@@ -197,6 +199,10 @@ export class ApiServiceService {
   //################ Start of Application Section ###################
   getApplications(): Promise<Application[]>{
     return this.http.get<Application[]>(`${this.path}/applications`).toPromise();
+  }
+
+  getApps(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.path}/applications`);
   }
 
   postApplication(appTitle:string,appLink:string):Promise<Application>{

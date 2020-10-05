@@ -38,19 +38,19 @@ export class BugReportViewComponent implements OnInit {
 
 
     constructor(private apiserv: ApiServiceService, private route: ActivatedRoute, private router: Router, private _snackBar:MatSnackBar) {
-        this.getClient();
-        if (this.client == null || this.client === undefined) {
-            this.router.navigate(["/"]);
-        } else {
-            this.brId = this.route.snapshot.paramMap.get("id");
-            this.getBugReportById();
-            this.getBugSolutionsById();
-        }
-
     }
 
     ngOnInit(): void {
-
+      this.client = JSON.parse(localStorage.getItem('client')) as Client;
+      this.isAdmin = !!this.client && !!this.client.role;
+      console.log(this.client);
+      if (this.client == null || this.client === undefined) {
+        this.router.navigate(["/"]);
+      } else {
+        this.brId = this.route.snapshot.paramMap.get("id");
+        this.getBugReportById();
+        this.getBugSolutionsById();
+      }
     }
     //0. Get Client By ID
     getClient(): Client {
@@ -59,7 +59,7 @@ export class BugReportViewComponent implements OnInit {
         /// console.log(this.client);
         return this.client;
     }
-    //1. Get Bug Report By ID 
+    //1. Get Bug Report By ID
     async getBugReportById(): Promise<BugReport> {
         this.br = await this.apiserv.getBugReportById(this.brId);
         this.requested = this.br.status === "Requested" ? true : false;
@@ -67,7 +67,7 @@ export class BugReportViewComponent implements OnInit {
         //  console.log(this.br);
         return this.br;
     }
-    //2. Get all Solutions  by Bug Report ID 
+    //2. Get all Solutions  by Bug Report ID
     async getBugSolutionsById(): Promise<Array<Solution>> {
         this.solutions = await this.apiserv.getSolutionsByBugId(this.brId);
         this.solutions.sort(function(a,b){

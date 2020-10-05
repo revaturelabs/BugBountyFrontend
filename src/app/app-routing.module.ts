@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [RequiresAuthenticationGuard]},
   { path: 'bugreportapprove/:id', component: BugReportViewComponent, canActivate: [RequiresAuthenticationGuard]},
   { path: 'bugs', component : ViewBugsPageComponent, canActivate: [RequiresAuthenticationGuard] },
-  { path: 'metrics', component: MetricsPageComponent, canActivate: [RequiresAuthenticationGuard]},
+  // { path: 'metrics', component: MetricsPageComponent, canActivate: [RequiresAuthenticationGuard]},
   { path: '', component: LoginMatComponent},
   { path: 'resetpassword', component: PasswordResetComponent}
 

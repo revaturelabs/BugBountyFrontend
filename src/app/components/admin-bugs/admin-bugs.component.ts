@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import BugReport from '../../models/BugReport';
 import {ApiServiceService} from '../../services/api-service.service';
 import Application from "../../models/application";
+import {Observable} from "rxjs";
+import {fromPromise} from "rxjs/internal-compatibility";
 
 @Component({
   selector: 'app-admin-bugs',
@@ -32,16 +34,17 @@ export class AdminBugsComponent implements OnInit {
 
   tableId:string;
 
+  $bugReports: Observable<BugReport[]>;
+  $applications: Observable<Application[]>;
+
   public buttonName: any = 'Table View';
   shown = false;
 
   constructor(private apiservice: ApiServiceService) { }
 
   ngOnInit(): void {
-    this.getBugReports();
-    this.getApplications();
-
-
+    this.$applications = this.apiservice.getApps();
+    this.$bugReports = this.apiservice.getBugs();
   }
 
   toggle() {

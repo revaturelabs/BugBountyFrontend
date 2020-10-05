@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { ApiServiceService } from 'src/app/services/api-service.service';
 import Client from 'src/app/models/Client';
+import {TokenService} from "../../services/token.service";
 
 enum ClientRole {
   unregistered,
@@ -25,6 +26,8 @@ export class MainNavComponent {
   theme = 'Light Mode';
   show = true;
 
+  $authenticated: Observable<boolean>;
+
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -32,7 +35,7 @@ export class MainNavComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private serv: ApiServiceService) {
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private serv: ApiServiceService, private tokenService: TokenService) {
     this.client = this.serv.getLoggedClient();
     if (!this.client) {
       this.clientRole = ClientRole.unregistered;
@@ -43,6 +46,7 @@ export class MainNavComponent {
 
   ngOnInit(): void {
     document.body.classList.add('light-theme');
+    this.$authenticated = this.tokenService.$token.pipe(map(token => !!token));
   }
 
 
@@ -61,13 +65,13 @@ export class MainNavComponent {
       this.serv.theme.emit("dark-theme");
     }
     else {
-      
+
       document.body.classList.remove('dark-theme');
       document.body.classList.add('light-theme');
       this.theme = 'Light Mode';
       this.serv.theme.emit("light-theme");
     }
-    
+
 
   }
   showNav(){

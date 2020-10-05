@@ -4,17 +4,17 @@
         <form [formGroup]="bugForm">
         <div class="form-group">
             <label class="formLabel">Title:</label>
-            <input class = "inputType" id="bugTitle" type="text" formControlName="title" required> 
+            <input class = "inputType" id="bugTitle" type="text" formControlName="title" required>
         </div>
-        
+
         <div class="form-group">
             <label class="formLabel">Application:</label>
             <select class="dropDown" formControlName="application" id="AppsDropDown">
                 <option value="" disabled>Choose application</option>
-                <option *ngFor="let application of applicationNameList" [ngValue]="application">{{application}}</option>
+                <option *ngFor="let application of $applications | async" [ngValue]="application?.title">{{application?.title}}</option>
             </select>
         </div>
-        
+
         <div class="form-group">
             <label class="formLabel">Suspected Location:</label>
             <input class = "inputType" type="text" id="suspectedLocation" formControlName="suspectedLocation">
@@ -36,22 +36,22 @@
             <label class="formLabel">Reporter:</label>
             <input class = "inputType" type="text" formControlName="reporter">
         </div>
-        
+
         <div class="form-group">
             <label class="formLabel">Description:</label>
             <editor formControlName="description" id="bugDescription" required [init]="{
-                base_url: '/tinymce', 
-                suffix: '.min' 
-              }"></editor>  
-                      
+                base_url: '/tinymce',
+                suffix: '.min'
+              }"></editor>
+
         </div>
 
         <div class="form-group">
             <label class="formLabel">Reproduce Steps:</label>
             <editor formControlName="reproduceSteps" id="bugReproduction" [init]="{
-                base_url: '/tinymce', 
-                suffix: '.min' 
-              }"></editor> 
+                base_url: '/tinymce',
+                suffix: '.min'
+              }"></editor>
         </div>
 
         <br>
@@ -59,7 +59,7 @@
             <button type="button" class="btn btn-secondary" (click)="cancelReport()" id="BugCancel">Cancel</button>
             <button type="submit" class="btn btn-success" (click)="submitReport()" [disabled]="bugForm.invalid" id="BugSubmit">Submit for Review</button>
         </div>
-        </form> 
+        </form>
         <p *ngIf="failToPost" class="warningPost">The bug failed to post. Please review the request</p>
         <!-- <p>{{bugForm.value | json}}</p> -->
     </div>
