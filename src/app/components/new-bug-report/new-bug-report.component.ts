@@ -7,6 +7,8 @@ import {ApiServiceService} from 'src/app/services/api-service.service';
 import { Validators } from '@angular/forms';
 import BugStatus from 'src/app/models/BugStatus';
 import { Router } from '@angular/router';
+import {Observable} from "rxjs";
+import {fromPromise} from "rxjs/internal-compatibility";
 
 @Component({
   selector: 'app-new-bug-report',
@@ -32,6 +34,8 @@ export class NewBugReportComponent implements OnInit {
   priorityLevel = ['Low', 'Medium', 'High'];
   severityLevel = ['Low', 'Medium', 'High'];
   failToPost:boolean = false;
+
+  $applications: Observable<Application[]>;
 
 
   constructor(private router:Router, private fb: FormBuilder, private api: ApiServiceService) { }
@@ -79,6 +83,7 @@ export class NewBugReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.$applications = this.api.getApps();
     this.getApplication();
     this.getClient();
   }

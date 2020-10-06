@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from 'src/app/services/api-service.service';
 import * as CanvasJS from 'src/assets/canvasjs.min';
 import { DatePipe } from '@angular/common';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-metrics-page-summary',
@@ -37,7 +38,6 @@ export class MetricsPageSummaryComponent implements OnInit {
       this.theme='dark2';
     }
     this.getStats();
-    
     this.apiservice.theme.subscribe((event)=>{
       if(document.body.classList.contains('light-theme')){
         this.theme = 'light2';
@@ -74,7 +74,7 @@ export class MetricsPageSummaryComponent implements OnInit {
       let diff:number;
       let a:number = r.resolvedTime
       let b:number = r.createdTime
-      
+
       diff = a - b
       let bid = r.bId;
       let created = this.datePipe.transform(b, 'yyyy-MM-dd')
@@ -89,7 +89,7 @@ export class MetricsPageSummaryComponent implements OnInit {
     this.timeSeries = this.timeSeries.sort().reverse()
 
     this.avgTime = Math.round(sum/nonZeros)
-    
+
     this.makePieChart();
     this.makeLineChart();
     this.lineChart.render();
@@ -132,13 +132,13 @@ export class MetricsPageSummaryComponent implements OnInit {
     // "It just works" - Todd Howard
     let data= [];
     let months = new Array();
-    
+
     for(let point of timeSeries){
       months.push(this.datePipe.transform(point, 'dd-MM-yyyy'))
     }
-    
 
-    // seperate into x=months, y=number of occurences 
+
+    // seperate into x=months, y=number of occurences
     let a = [], b = [], prev;
     for ( var i = 0; i < months.length; i++ ) {
         if ( months[i] !== prev ) {
@@ -153,17 +153,17 @@ export class MetricsPageSummaryComponent implements OnInit {
     for(var j = 0; j< a.length; j++){
       data.push({ y : b[j]})
     }
-    
-    
-    
+
+
+
     return data;
   }
 
   makeLineChart(){
 
-    
+
     let dataPoints = this.formatTimeDataByMonth(this.timeSeries).reverse();
-	  
+
 
 	  let chart = new CanvasJS.Chart("lineChartContainer", {
       theme: this.theme,
@@ -195,7 +195,7 @@ export class MetricsPageSummaryComponent implements OnInit {
 
                 "rgb(199, 74, 65)",
                 "rgb(241, 218, 115)",
-                "rgb(161, 241, 115)"             
+                "rgb(161, 241, 115)"
                 ]);
     let chart = new CanvasJS.Chart("pieChartContainer", {
       theme: this.theme,
@@ -214,6 +214,63 @@ export class MetricsPageSummaryComponent implements OnInit {
           { y: this.highCount, name: "High" },
           { y: this.medCount, name: "Medium" },
           { y: this.lowCount, name: "Low" }
+        ]
+      }]
+    });
+
+    this.pieChart = chart;
+  }
+
+  makeLineChartWithData(timeSeries) {
+    let dataPoints = this.formatTimeDataByMonth(timeSeries).reverse();
+    let chart = new CanvasJS.Chart("lineChartContainer", {
+      theme: this.theme,
+      zoomEnabled: true,
+      animationEnabled: true,
+      backgroundColor: "transparent",
+      title: {
+        text: "Bug Reports Per Month"
+      },
+      axisX: {
+        labelAngle: -30
+      },
+      axisY: {
+        gridColor: "transparent"
+      },
+      data: [
+        {
+          type: "line",
+          dataPoints: dataPoints
+        }]
+    });
+    this.lineChart = chart;
+  }
+
+  makePieChartWithData(highCount: number, medCount: number, lowCount: number) {
+    CanvasJS.addColorSet("pieShades",
+      [//colorSet Array
+
+        "rgb(199, 74, 65)",
+        "rgb(241, 218, 115)",
+        "rgb(161, 241, 115)"
+      ]);
+    let chart = new CanvasJS.Chart("pieChartContainer", {
+      theme: this.theme,
+      backgroundColor: "transparent",
+      animationEnabled: true,
+      colorSet:"pieShades",
+      title:{
+        text: "Severity Distribution"
+      },
+      data: [{
+        type: "pie",
+        showInLegend: true,
+        toolTipContent: "<b>{name}</b>: {y} Bugs (#percent%)",
+        indexLabel: "{name} - #percent%",
+        dataPoints: [
+          { y: highCount, name: "High" },
+          { y: medCount, name: "Medium" },
+          { y: lowCount, name: "Low" }
         ]
       }]
     });

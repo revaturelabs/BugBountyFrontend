@@ -16,7 +16,7 @@
                         <div class="application-select-container">
                             <div class="application-select">
                                 <select [(ngModel)] = "selectedApp" (change)="selectChangeHandler($event)">
-                                    <option *ngFor="let app of applications" id = "app{{app.id}}" [ngValue] ="app">{{app.title}}</option>
+                                    <option *ngFor="let app of $applications | async" id = "app{{app.id}}" [ngValue] ="app">{{app.title}}</option>
                                 </select>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                 </div>
             </div>
     </section>
-</div> 
+</div>
 
 
 

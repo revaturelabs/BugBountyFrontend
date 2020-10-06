@@ -1,11 +1,11 @@
 <div class="filter-container">
   <div class="selectDivs" id="appsort">
     <div >
-    Bugs by Application: 
+    Bugs by Application:
     <mat-form-field>
         <mat-select [(value)]="selectedAppTitle">
             <mat-option value = "All" (click) = "filterByApplication()">All</mat-option>
-            <mat-option *ngFor="let app of apps" [value]="app.title" (click) ="filterByApplication()">{{app.title}}</mat-option>
+            <mat-option *ngFor="let app of $applications | async" [value]="app.title" (click) ="filterByApplication()">{{app.title}}</mat-option>
         </mat-select></mat-form-field>
     </div>
 
@@ -13,7 +13,7 @@
 
   <div id="severitysort">
     <div >
-        Bugs by Severity: 
+        Bugs by Severity:
         <mat-form-field>
           <mat-label>{{severityDisplay}}</mat-label>
             <mat-select [(value)]="severity">
@@ -26,7 +26,7 @@
   </div>
   <div id="prioritysort">
     <div >
-        Bugs by Priority: 
+        Bugs by Priority:
         <mat-form-field>
           <mat-label>{{priorityDisplay}}</mat-label>
             <mat-select [(value)]="priority">

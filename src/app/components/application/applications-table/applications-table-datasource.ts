@@ -1,7 +1,7 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map } from 'rxjs/operators';
+import {flatMap, map} from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 
 export interface ApplicationsTableItem {
@@ -18,7 +18,7 @@ const TABLE_DATA: ApplicationsTableItem[] = [{id: 1, title: 'Project 1', gitLink
  * (including sorting, pagination, and filtering).
  */
 export class ApplicationsTableDataSource extends DataSource<any> {
-  data: any[] = this.givenData;
+  data: Observable<any[]> = this.givenData;
   paginator: MatPaginator;
   sort: MatSort;
 
@@ -36,13 +36,14 @@ export class ApplicationsTableDataSource extends DataSource<any> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
     const dataMutations = [
-      observableOf(this.data),
+      this.data,
       this.paginator.page,
       this.sort.sortChange
     ];
 
-    return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.data]));
+    return merge(...dataMutations).pipe(flatMap(() => {
+
+      return this.data.pipe(map(data => this.getPagedData(this.getSortedData([...data]))))
     }));
   }
 
