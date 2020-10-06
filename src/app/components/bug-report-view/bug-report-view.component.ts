@@ -43,13 +43,13 @@ export class BugReportViewComponent implements OnInit {
     ngOnInit(): void {
       this.client = JSON.parse(localStorage.getItem('client')) as Client;
       this.isAdmin = !!this.client && !!this.client.role;
-      console.log(this.client);
+      console.log(this.route.snapshot.paramMap.get("id"))
       if (this.client == null || this.client === undefined) {
         this.router.navigate(["/"]);
       } else {
         this.brId = this.route.snapshot.paramMap.get("id");
-        this.getBugReportById();
-        this.getBugSolutionsById();
+        this.getBugReportById().then(data => console.log(data));
+        this.getBugSolutionsById().then(data => console.log(data));
       }
     }
     //0. Get Client By ID
@@ -62,6 +62,7 @@ export class BugReportViewComponent implements OnInit {
     //1. Get Bug Report By ID
     async getBugReportById(): Promise<BugReport> {
         this.br = await this.apiserv.getBugReportById(this.brId);
+        console.log(await this.apiserv.getBugReportById(this.brId))
         this.requested = this.br.status === "Requested" ? true : false;
         //console.log(this.br.solutions);
         //  console.log(this.br);

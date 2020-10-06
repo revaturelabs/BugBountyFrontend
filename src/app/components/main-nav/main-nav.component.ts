@@ -55,6 +55,7 @@ export class MainNavComponent {
     this.clientRole = ClientRole.unregistered;
     this.serv.clearLoggedClient();
     this.router.navigate(['/']);
+    this.tokenService.clearAuthentication();
   }
 
   changeTheme(){

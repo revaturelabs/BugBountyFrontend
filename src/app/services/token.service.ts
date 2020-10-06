@@ -42,6 +42,10 @@ export class TokenService {
     );
   }
 
+  clearAuthentication(): void {
+    this._token.next(undefined);
+  }
+
   get $authenticated(): Observable<boolean> {
     return this.$token.pipe(map(token => token !== undefined));
   }

@@ -61,10 +61,10 @@
 
       <div class="admin-links links" *ngIf="($authenticated | async) || clientRole == 2"><!-- Admin -->
         <a [routerLink]="['/applications']" [routerLinkActive]="['active']" id="applicationsTab">Applications</a>
-        <a mat-list-item [routerLink]="['/metrics']" [routerLinkActive]="['active']">Metrics</a>
+<!--        <a mat-list-item [routerLink]="['/metrics']" [routerLinkActive]="['active']">Metrics</a>-->
       </div>
-      <a class="login" *ngIf="clientRole != 0" (click)="logout()">Logout</a>
-      <a class="login" *ngIf="clientRole == 0" routerLink="/">Login</a>
+      <a class="login" *ngIf="($authenticated | async)" (click)="logout()">Logout</a>
+      <a class="login" *ngIf="!($authenticated | async)" routerLink="/">Login</a>
 
     </mat-toolbar>
     <!-- Add Content Here -->

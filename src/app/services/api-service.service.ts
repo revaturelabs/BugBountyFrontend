@@ -80,7 +80,7 @@ export class ApiServiceService {
     return this.http.get<number>(`${this.path}/bugreports?priority=Low&count=true`).toPromise();
   }
 
-  getBugReportById(id:number) {
+  getBugReportById(id:number): Promise<BugReport> {
     return this.http.get<BugReport>(`${this.path}/bugreports/${id}`).toPromise();
   }
 
