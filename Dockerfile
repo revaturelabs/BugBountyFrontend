@@ -1,13 +1,6 @@
-FROM node:10-alpine as builder
-COPY package.json package-lock.json ./
-## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN npm ci && mkdir /app && mv ./node_modules /app
-WORKDIR /app
-COPY . .
-RUN npm run ng build --prod --aot
-
 FROM nginx:alpine
+ARG DIST=dist/project3-frontend
 COPY nginx.conf /etc/nginx/conf.d/nginx.conf
 WORKDIR /usr/share/nginx/html
-COPY --from=builder /app/dist/project3-frontend .
+COPY $DIST .
 CMD ["nginx", "-g", "daemon off;"]
